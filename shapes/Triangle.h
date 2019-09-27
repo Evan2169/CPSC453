@@ -30,10 +30,6 @@ namespace Shapes
 };
 
 template<int dimensions, typename CoordinatePrimitive>
-bool operator==(const Shapes::Triangle<dimensions, CoordinatePrimitive>& lhs, 
-	const Shapes::Triangle<dimensions, CoordinatePrimitive>& rhs);
-
-template<int dimensions, typename CoordinatePrimitive>
 Shapes::Triangle<dimensions, CoordinatePrimitive>::Triangle(
 	const MathTypes::Vector<dimensions, CoordinatePrimitive>& p1, 
 	const MathTypes::Vector<dimensions, CoordinatePrimitive>& p2, 
