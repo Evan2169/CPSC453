@@ -69,37 +69,37 @@ Shapes::Cube<CoordinatePrimitive>::Cube(const MathTypes::Vector<3, CoordinatePri
 }
 
 template<typename CoordinatePrimitive>
-Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::front() const
+Shapes::Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::front() const
 {
 	return front_;
 }
 
 template<typename CoordinatePrimitive>
-Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::back() const
+Shapes::Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::back() const
 {
 	return back_;
 }
 
 template<typename CoordinatePrimitive>
-Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::top() const
+Shapes::Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::top() const
 {
 	return top_;
 }
 
 template<typename CoordinatePrimitive>
-Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::bottom() const
+Shapes::Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::bottom() const
 {
 	return bottom_;
 }
 
 template<typename CoordinatePrimitive>
-Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::right() const
+Shapes::Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::right() const
 {
 	return right_;
 }
 
 template<typename CoordinatePrimitive>
-Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::left() const
+Shapes::Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::left() const
 {
 	return left_;
 }
@@ -107,18 +107,21 @@ Quadrilateral<3, CoordinatePrimitive> Shapes::Cube<CoordinatePrimitive>::left() 
 template<typename CoordinatePrimitive>
 std::vector<MathTypes::Vector<3, CoordinatePrimitive>> Shapes::Cube<CoordinatePrimitive>::vertices() const
 {
-	std::vector<MathTypes::Vector> vertices;
+	std::vector<MathTypes::Vector<3, CoordinatePrimitive>> vertices;
 	for(const auto& side : allSides())
 	{
-		vertices.insert(std::begin(vertices), std::begin(side), std::end(side));
+		for(const auto& vert : side.vertices())
+		{
+			vertices.push_back(vert);
+		}
 	}
 	return vertices;
 }
 
 template<typename CoordinatePrimitive>
-std::list<Quadrilateral<3, CoordinatePrimitive>> Shapes::Cube<CoordinatePrimitive>::allSides() const
+std::list<Shapes::Quadrilateral<3, CoordinatePrimitive>> Shapes::Cube<CoordinatePrimitive>::allSides() const
 {
-	return std::list<Quadrilateral<3, CoordinatePrimitive>>({front_, back_, top_, bottom_, right_, left_}); 
+	return std::list<Shapes::Quadrilateral<3, CoordinatePrimitive>>({front_, back_, top_, bottom_, right_, left_}); 
 }
 
 template<typename CoordinatePrimitive>
@@ -143,9 +146,6 @@ std::string Shapes::Cube<CoordinatePrimitive>::toString() const
 		bottom_.toString().c_str(),
 		right_.toString().c_str(),
 		left_.toString().c_str());
-
-	printf("Here bop\n");
-	fflush(stdout);
 
 	return std::string(buffer);
 }

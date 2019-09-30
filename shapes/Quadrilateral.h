@@ -66,8 +66,8 @@ std::string Shapes::Quadrilateral<dimensions, CoordinatePrimitive>::toString() c
 	auto vertsOne = topLeftBottomRightBottomLeft_.vertices();
 	auto vertsTwo = topLeftTopRightBottomRight_.vertices();
 
-	sprintf(buffer, formatString, vertsOne[3].toString().c_str(), vertsOne[1].toString().c_str(),
+	sprintf(buffer, formatString, vertsOne[2].toString().c_str(), vertsOne[1].toString().c_str(),
 	 vertsOne[0].toString().c_str(), vertsTwo[1].toString().c_str());
-
+	
 	return std::string(buffer);
 }
