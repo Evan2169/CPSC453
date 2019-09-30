@@ -5,7 +5,6 @@
 
 namespace Shapes
 {
-
 	template<int dimensions, typename CoordinatePrimitive>
 	class Quadrilateral
 	{
@@ -51,7 +50,6 @@ Shapes::Quadrilateral<dimensions, CoordinatePrimitive>::vertices() const
 	return vertices;
 }
 
-
 template<int dimensions, typename CoordinatePrimitive>
 std::string Shapes::Quadrilateral<dimensions, CoordinatePrimitive>::toString() const
 {
@@ -63,7 +61,7 @@ std::string Shapes::Quadrilateral<dimensions, CoordinatePrimitive>::toString() c
 		Top Left:     %s 
 		Top Right:    %s
 	})";
-	char buffer[500];
+	char buffer[2000];
 
 	auto vertsOne = topLeftBottomRightBottomLeft_.vertices();
 	auto vertsTwo = topLeftTopRightBottomRight_.vertices();
