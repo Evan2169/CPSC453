@@ -27,7 +27,7 @@ namespace GLUtility
 		Position(MathTypes::Vector<2, CoordinatePrimitive> vec) : x(vec.xValue()), y(vec.yValue())
 		{
 		};
-		Position(MathTypes::Vector<3, CoordinatePrimitive> vec) : x(vec.xValue()), y(vec.yValue()), z(z.zValue())
+		Position(MathTypes::Vector<3, CoordinatePrimitive> vec) : x(vec.xValue()), y(vec.yValue()), z(vec.zValue())
 		{
 		};
 
