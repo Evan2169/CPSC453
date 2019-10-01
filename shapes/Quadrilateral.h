@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Triangle.h"
 #include "Vector.h"
 
@@ -16,7 +18,8 @@ namespace Shapes
 			const MathTypes::Vector<dimensions, CoordinatePrimitive>& topRight);
 		~Quadrilateral() = default;
 		
-		std::array<MathTypes::Vector<dimensions, CoordinatePrimitive>, 6> vertices() const;
+		std::vector<MathTypes::Vector<dimensions, CoordinatePrimitive>> vertices() const;
+		void transform(const MathTypes::Matrix<dimensions+1, dimensions+1, CoordinatePrimitive>& transformationMatrix);
 
 		std::string toString() const;
 
@@ -38,16 +41,24 @@ Shapes::Quadrilateral<dimensions, CoordinatePrimitive>::Quadrilateral(
 }
 
 template<int dimensions, typename CoordinatePrimitive>
-std::array<MathTypes::Vector<dimensions, CoordinatePrimitive>, 6>
+std::vector<MathTypes::Vector<dimensions, CoordinatePrimitive>>
 Shapes::Quadrilateral<dimensions, CoordinatePrimitive>::vertices() const
 {
 	auto vertsOne = topLeftBottomRightBottomLeft_.vertices();
 	auto vertsTwo = topLeftTopRightBottomRight_.vertices();
 
-	std::array<MathTypes::Vector<dimensions, CoordinatePrimitive>, 6> vertices 
-	= {vertsOne[0], vertsOne[1], vertsOne[2], vertsTwo[0], vertsTwo[1], vertsTwo[2]};
+	std::vector<MathTypes::Vector<dimensions, CoordinatePrimitive>> 
+	vertices({vertsOne[0], vertsOne[1], vertsOne[2], vertsTwo[0], vertsTwo[1], vertsTwo[2]});
 
 	return vertices;
+}
+
+template<int dimensions, typename CoordinatePrimitive>
+void Shapes::Quadrilateral<dimensions, CoordinatePrimitive>::transform(
+	const MathTypes::Matrix<dimensions+1, dimensions+1, CoordinatePrimitive>& transformationMatrix)
+{
+	topLeftBottomRightBottomLeft_.transform(transformationMatrix);
+	topLeftTopRightBottomRight_.transform(transformationMatrix);
 }
 
 template<int dimensions, typename CoordinatePrimitive>
@@ -68,6 +79,6 @@ std::string Shapes::Quadrilateral<dimensions, CoordinatePrimitive>::toString() c
 
 	sprintf(buffer, formatString, vertsOne[2].toString().c_str(), vertsOne[1].toString().c_str(),
 	 vertsOne[0].toString().c_str(), vertsTwo[1].toString().c_str());
-	
+
 	return std::string(buffer);
 }
