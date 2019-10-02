@@ -115,3 +115,33 @@ MathTypes::Matrix<4, 4, CoordinatePrimitive> Matrices::rotateAboutX3D(Coordinate
 		{0, 0, 				 0, 				  1}
 	});
 }
+
+template<typename CoordinatePrimitive>
+MathTypes::Matrix<4, 4, CoordinatePrimitive> Matrices::rotateAboutY3D(CoordinatePrimitive angleInDegrees)
+{
+	CoordinatePrimitive angleInRadians = Trigonometry::convertAngleFromDegreesToRadians(angleInDegrees);
+	CoordinatePrimitive cosineOfAngle = static_cast<CoordinatePrimitive>(std::cos(angleInRadians));
+	CoordinatePrimitive sineOfAngle = static_cast<CoordinatePrimitive>(std::sin(angleInRadians));
+
+	return MathTypes::Matrix<4, 4, CoordinatePrimitive>({
+		{cosineOfAngle,  0, sineOfAngle,   0},
+		{0,              1, 0,             0},
+		{-1*sineOfAngle, 0, cosineOfAngle, 0},
+		{0,              0, 0, 				  1}
+	});
+}
+
+template<typename CoordinatePrimitive>
+MathTypes::Matrix<4, 4, CoordinatePrimitive> Matrices::rotateAboutZ3D(CoordinatePrimitive angleInDegrees)
+{
+	CoordinatePrimitive angleInRadians = Trigonometry::convertAngleFromDegreesToRadians(angleInDegrees);
+	CoordinatePrimitive cosineOfAngle = static_cast<CoordinatePrimitive>(std::cos(angleInRadians));
+	CoordinatePrimitive sineOfAngle = static_cast<CoordinatePrimitive>(std::sin(angleInRadians));
+
+	return MathTypes::Matrix<4, 4, CoordinatePrimitive>({
+		{cosineOfAngle, -1*sineOfAngle, 0, 0},
+		{sineOfAngle, 	 cosineOfAngle,  0, 0},
+		{0,             0, 				  1, 0},
+		{0,             0,				  0, 1}
+	});
+}
