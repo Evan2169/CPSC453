@@ -4,6 +4,7 @@
 
 #include "Cube.h"
 #include "DrawableShape.h"
+#include "Matrix.h"
 #include "Quadrilateral.h"
 #include "Vertex.h"
 
@@ -23,6 +24,8 @@ namespace GLUtility
 			const Colour<CoordinatePrimitive>& leftColour);
 		~DrawableCube() = default;
 
+		void transformUnderlyingCube(const MathTypes::Matrix<4, 4, CoordinatePrimitive>& transformationMatrix);
+		void render() const;
 		std::vector<Vertex<CoordinatePrimitive, ColourPrimitive>> vertices() const;
 
 	private:
@@ -56,6 +59,27 @@ GLUtility::DrawableCube<CoordinatePrimitive, ColourPrimitive>::DrawableCube(
 	,  right_(cube.right(), rightColour)
 	,	left_(cube.left(), leftColour)
 {
+}
+
+template<typename CoordinatePrimitive, typename ColourPrimitive>
+void GLUtility::DrawableCube<CoordinatePrimitive, ColourPrimitive>::transformUnderlyingCube(
+	const MathTypes::Matrix<4, 4, CoordinatePrimitive>& transformationMatrix)
+{
+	front_.transformUnderlyingShape(transformationMatrix);
+	back_.transformUnderlyingShape(transformationMatrix);
+	top_.transformUnderlyingShape(transformationMatrix);
+	bottom_.transformUnderlyingShape(transformationMatrix);
+	right_.transformUnderlyingShape(transformationMatrix);
+	left_.transformUnderlyingShape(transformationMatrix);
+}
+
+template<typename CoordinatePrimitive, typename ColourPrimitive>
+void GLUtility::DrawableCube<CoordinatePrimitive, ColourPrimitive>::render() const
+{
+    for(const auto& side : allSides())
+    {
+      side.renderUnderlyingTriangles();
+    }
 }
 
 template<typename CoordinatePrimitive, typename ColourPrimitive>

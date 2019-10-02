@@ -1,9 +1,11 @@
 #pragma once
 
 #include <algorithm>
+#include "glad/glad.h"
 #include <iterator>
 #include <vector>
 
+#include "Matrix.h"
 #include "Vector.h"
 #include "Vertex.h"
 
@@ -16,6 +18,8 @@ namespace GLUtility
 		DrawableShape(const BaseShape& baseShape, const GLUtility::Colour<ColourPrimitive>& colour);
 		~DrawableShape() = default;
 
+		void transformUnderlyingShape(const MathTypes::Matrix<4, 4, CoordinatePrimitive>& transformationMatrix);
+		void renderUnderlyingTriangles() const;
 		std::vector<Vertex<CoordinatePrimitive, ColourPrimitive>> vertices() const;
 
 	private:
@@ -32,6 +36,26 @@ GLUtility::DrawableShape<dimensions, BaseShape, CoordinatePrimitive, ColourPrimi
 	, colour_(colour)
 {
 }
+
+template<int dimensions, typename BaseShape, typename CoordinatePrimitive, typename ColourPrimitive>
+void GLUtility::DrawableShape<dimensions, BaseShape, CoordinatePrimitive, ColourPrimitive>::transformUnderlyingShape(
+	const MathTypes::Matrix<4, 4, CoordinatePrimitive>& transformationMatrix)
+{
+   baseShape_.transform(transformationMatrix);
+}
+
+template<int dimensions, typename BaseShape, typename CoordinatePrimitive, typename ColourPrimitive>
+void GLUtility::DrawableShape<dimensions, BaseShape, CoordinatePrimitive, ColourPrimitive>::renderUnderlyingTriangles() const
+{
+   glColor3f(colour_.red, colour_.green, colour_.blue);
+	glBegin(GL_TRIANGLES);
+    for(const auto& vertex : vertices())
+    {
+      glVertex3f(vertex.position.x, vertex.position.y, -1*vertex.position.z);
+    }
+    glEnd();
+}
+
 
 template<int dimensions, typename BaseShape, typename CoordinatePrimitive, typename ColourPrimitive>
 std::vector<GLUtility::Vertex<CoordinatePrimitive, ColourPrimitive>> 
