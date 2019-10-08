@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "Triangle.h"
-#include "Vector.h"
+#include "math/Vector.h"
+#include "shapes/Triangle.h"
 
 namespace Shapes
 {

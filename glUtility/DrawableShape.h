@@ -5,9 +5,9 @@
 #include <iterator>
 #include <vector>
 
-#include "Matrix.h"
-#include "Vector.h"
-#include "Vertex.h"
+#include "glUtility/Vertex.h"
+#include "math/Matrix.h"
+#include "math/Vector.h"
 
 namespace GLUtility
 {
@@ -51,7 +51,7 @@ void GLUtility::DrawableShape<dimensions, BaseShape, CoordinatePrimitive, Colour
 	glBegin(GL_TRIANGLES);
     for(const auto& vertex : vertices())
     {
-      glVertex3f(vertex.position.x, vertex.position.y, -1*vertex.position.z);
+      glVertex3f(vertex.position.x, vertex.position.y, vertex.position.z);
     }
     glEnd();
 }

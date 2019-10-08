@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "Matrix.h"
-#include "Vector.h"
+#include "math/Matrix.h"
+#include "math/Vector.h"
 
 namespace Shapes
 {

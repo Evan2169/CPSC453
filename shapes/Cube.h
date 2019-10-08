@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "Quadrilateral.h"
-#include "Vector.h"
+#include "shapes/Quadrilateral.h"
+#include "math/Vector.h"
 
 namespace Shapes
 {

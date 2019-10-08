@@ -17,9 +17,10 @@ namespace MathTypes
 			explicit Matrix(CoordinatePrimitive data[rows][columns]);
 			~Matrix() = default;
 
+			Matrix<columns, rows, CoordinatePrimitive> transpose() const;
 			std::array<CoordinatePrimitive, columns> operator[](int row) const;
-			std::array<CoordinatePrimitive, columns> ithRow(int i);
-			std::array<CoordinatePrimitive, rows> jthColumn(int j);
+			std::array<CoordinatePrimitive, columns> ithRow(int i) const;
+			std::array<CoordinatePrimitive, rows> jthColumn(int j) const;
 
 			std::string toString() const;
 
@@ -89,6 +90,22 @@ std::string MathTypes::Matrix<rows, columns, CoordinatePrimitive>::toString() co
 }
 
 template <int rows, int columns, typename CoordinatePrimitive>
+MathTypes::Matrix<columns, rows, CoordinatePrimitive> MathTypes::Matrix<rows, columns, CoordinatePrimitive>::transpose() const
+{
+	CoordinatePrimitive transposedRaw[columns][rows];
+	for(int i = 0; i < rows; i++)
+	{
+		for(int j = 0; j < columns; j++)
+		{
+			transposedRaw[j][i] = data_[i][j];
+		}
+	}
+
+	return Matrix<columns, rows, CoordinatePrimitive>(transposedRaw);
+}
+
+
+template <int rows, int columns, typename CoordinatePrimitive>
 std::array<CoordinatePrimitive, columns> MathTypes::Matrix<rows, columns, CoordinatePrimitive>::operator[](int row) const
 {
 	assert(row >= 0 && row < data_.size());
@@ -132,13 +149,13 @@ MathTypes::Matrix<lhsRows, rhsColumns, CoordinatePrimitive> operator*(
 	}
 
 template<int rows, int columns, typename CoordinatePrimitive>
-std::array<CoordinatePrimitive, columns> MathTypes::Matrix<rows, columns, CoordinatePrimitive>::ithRow(int i)
+std::array<CoordinatePrimitive, columns> MathTypes::Matrix<rows, columns, CoordinatePrimitive>::ithRow(int i) const
 {
 	return operator[](i);
 }
 
 template<int rows, int columns, typename CoordinatePrimitive>
-std::array<CoordinatePrimitive, rows> MathTypes::Matrix<rows, columns, CoordinatePrimitive>::jthColumn(int j)
+std::array<CoordinatePrimitive, rows> MathTypes::Matrix<rows, columns, CoordinatePrimitive>::jthColumn(int j) const
 {
 	std::array<CoordinatePrimitive, rows> buffer;
 

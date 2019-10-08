@@ -2,11 +2,11 @@
 
 #include <list>
 
-#include "Cube.h"
-#include "DrawableShape.h"
-#include "Matrix.h"
-#include "Quadrilateral.h"
-#include "Vertex.h"
+#include "glUtility/DrawableShape.h"
+#include "glUtility/Vertex.h"
+#include "math/Matrix.h"
+#include "shapes/Cube.h"
+#include "shapes/Quadrilateral.h"
 
 namespace GLUtility
 {

@@ -2,8 +2,8 @@
 
 #include <functional>
 
-#include "DrawableCube.h"
-#include "Vector.h"
+#include "glUtility/DrawableCube.h"
+#include "math/Vector.h"
 
 using namespace GLUtility;
 using namespace MathTypes;
@@ -168,19 +168,12 @@ std::vector<DrawableCube<float, float>> MengerSponge::cubesForMengerSponge(
 
 DrawableCube<float, float> MengerSponge::baseCube(const Vector<3, float>& bottomLeftCorner, float sideLength) const
 {
-   
    return DrawableCube<float, float>(
    	Cube<float>(bottomLeftCorner, sideLength),
-   	Colour<float>(1, 0, 0), 
-   	Colour<float>(0.85, 0.85, 0.85),
-   	Colour<float>(0, 1, 0),
-   	Colour<float>(0.75, 0.75, 0.75), 
-   	Colour<float>(0, 0, 1),
-   	Colour<float>(0.65, 0.65, 0.65));
-   	// Colour<float>(0.90, 0.90, 0.90), 
-   	// Colour<float>(0.85, 0.85, 0.85),
-   	// Colour<float>(0.80, 0.80, 0.80),
-   	// Colour<float>(0.75, 0.75, 0.75), 
-   	// Colour<float>(0.70, 0.70, 0.70),
-   	// Colour<float>(0.65, 0.65, 0.65));
+   	Colour<float>(0.5, 0.0, 1.0), 
+   	Colour<float>(1.0, 0.0, 1.0),
+   	Colour<float>(0.0, 1.0, 0.5),
+   	Colour<float>(0.0, 0.1, 1.0), 
+   	Colour<float>(0.0, 0.5, 1.0),
+   	Colour<float>(0.0, 1.0, 1.0));
 }
