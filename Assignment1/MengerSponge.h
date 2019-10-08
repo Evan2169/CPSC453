@@ -24,4 +24,5 @@ public:
 private:
 	GLUtility::DrawableCube<float, float> baseCube(
 		const MathTypes::Vector<3, float>& bottomLeftCorner, float sideLength) const;
+	bool cubeShouldBeDrawnGivenIndicesOfPosition(int widthIndex, int heightIndex, int depthIndex) const;
 };

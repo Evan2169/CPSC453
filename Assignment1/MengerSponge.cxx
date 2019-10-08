@@ -1,6 +1,10 @@
 #include "MengerSponge.h"
 
+#include <algorithm>
 #include <functional>
+#include <list>
+#include <tuple>
+#include <vector>
 
 #include "glUtility/DrawableCube.h"
 #include "math/Vector.h"
@@ -18,145 +22,26 @@ std::vector<DrawableCube<float, float>> MengerSponge::cubesForMengerSponge(
 	{
 		const float sideLengthDividedByThree = sideLength / 3;
 
-		//Front bottom left
-		auto cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(0, 0, 0), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
+		for(int i = 0; i < 3; i++)
+		{
+			for(int j = 0; j < 3; j++)
+			{
+				for(int k = 0; k < 3; k++)
+				{
+					if(cubeShouldBeDrawnGivenIndicesOfPosition(i, j, k))
+					{
+						auto cubes = cubesForMengerSponge(
+							levelOfRecursion - 1, 
+							bottomLeftCorner + Vector<3, float>(i*sideLengthDividedByThree, 
+																			j*sideLengthDividedByThree, 
+																			-k*sideLengthDividedByThree), 
+							sideLengthDividedByThree);
+						allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
+					}
+				}
+			}
+		}
 
-		//Middle bottom left
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(0, 0, -1*sideLengthDividedByThree), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Back bottom left
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(0, 0, -1*sideLengthDividedByThree*2), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Front middle left
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(0, sideLengthDividedByThree, 0), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Back middle left
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(0, sideLengthDividedByThree, -1*sideLengthDividedByThree*2), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Front top left
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(0, sideLengthDividedByThree*2, 0), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Middle top left
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(0, sideLengthDividedByThree*2, -1*sideLengthDividedByThree), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Back top left
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(0, sideLengthDividedByThree*2, -1*sideLengthDividedByThree*2), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Front bottom middle
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree, 0, 0), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Back bottom middle
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree, 0, -1*sideLengthDividedByThree*2), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Front top middle
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree, sideLengthDividedByThree*2, 0), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Back top middle
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree, sideLengthDividedByThree*2, -1*sideLengthDividedByThree*2), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Front bottom right
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree*2, 0, 0), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Middle bottom right
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree*2, 0, -1*sideLengthDividedByThree), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Back bottom right
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree*2, 0, -1*sideLengthDividedByThree*2), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Front middle right
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree*2, sideLengthDividedByThree, 0), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Back middle right
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree*2, sideLengthDividedByThree, -1*sideLengthDividedByThree*2), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Front top right
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree*2, sideLengthDividedByThree*2, 0), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Middle top right
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree*2, sideLengthDividedByThree*2, -1*sideLengthDividedByThree), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
-
-		//Back top right
-		cubes = cubesForMengerSponge(
-			levelOfRecursion - 1, 
-			bottomLeftCorner + Vector<3, float>(sideLengthDividedByThree*2, sideLengthDividedByThree*2, -1*sideLengthDividedByThree*2), 
-			sideLengthDividedByThree);
-		allCubes.insert(std::end(allCubes), std::begin(cubes), std::end(cubes));
 	}
 	else if(levelOfRecursion == 0)
 	{
@@ -176,4 +61,14 @@ DrawableCube<float, float> MengerSponge::baseCube(const Vector<3, float>& bottom
    	Colour<float>(0.0, 0.1, 1.0), 
    	Colour<float>(0.0, 0.5, 1.0),
    	Colour<float>(0.0, 1.0, 1.0));
+}
+
+bool MengerSponge::cubeShouldBeDrawnGivenIndicesOfPosition(int widthIndex, int heightIndex, int depthIndex) const
+{
+	using std::make_tuple;
+	std::list<std::tuple<int, int, int>> positionsOfCubesThatShouldNotBeDrawn({make_tuple(1, 1, 0), make_tuple(1, 1, 1), 
+		make_tuple(1, 1, 2), make_tuple(0, 1, 1), make_tuple(2, 1, 1), make_tuple(1, 0, 1), make_tuple(1, 2, 1)});
+
+	return std::find(std::begin(positionsOfCubesThatShouldNotBeDrawn), std::end(positionsOfCubesThatShouldNotBeDrawn),
+		make_tuple(widthIndex, heightIndex, depthIndex)) == std::end(positionsOfCubesThatShouldNotBeDrawn);
 }
