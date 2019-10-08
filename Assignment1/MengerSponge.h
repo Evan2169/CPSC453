@@ -21,7 +21,7 @@ public:
 	std::vector<GLUtility::DrawableCube<float, float>> cubesForMengerSponge(
 		int levelOfRecursion, const MathTypes::Vector<3, float>& bottomLeftCorner, float sideLength) const;
 
-// private:
+private:
 	GLUtility::DrawableCube<float, float> baseCube(
 		const MathTypes::Vector<3, float>& bottomLeftCorner, float sideLength) const;
 };
