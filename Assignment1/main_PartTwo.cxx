@@ -72,7 +72,10 @@ void calculateAndLoadMVP(GLuint programId)
     * Matrices::rotateAboutZ3D<float>(Callbacks::currentZRotationDegrees())
     //Scaling
     * Matrices::uniformScaleMatrix3D<float>(Callbacks::currentZoomRatio());
-  
+
+  const float aspectRatio = (static_cast<float>(Callbacks::currentWindowWidth())
+                                  / static_cast<float>(Callbacks::currentWindowHeight()));
+
   const auto camera = Matrices::lookAtMatrix<float>(
     MathTypes::Vector<3, float>(0, 0, 61), 
     MathTypes::Vector<3, float>(0, 0, 0),
@@ -80,15 +83,23 @@ void calculateAndLoadMVP(GLuint programId)
    
   if(Callbacks::currentPerspectiveEnabled())
   {
-      const auto mvp = MatrixUtility::convertToColumnMajorArray<float>(
-        Matrices::perspectiveProjectionMatrix3D<float>(-30, 30, -30, 30, 21, 90) * camera * transformationMatrix).data();
-      glUniformMatrix4fv(glGetUniformLocation(programId, "MVP"), 1, false, mvp);
+    const float oneHalfViewWidth = 60.0 * 0.5 * aspectRatio;
+    const auto mvp = MatrixUtility::convertToColumnMajorArray<float>(
+      Matrices::perspectiveProjectionMatrix3D<float>(-oneHalfViewWidth, oneHalfViewWidth, -30, 30, 21, 90) 
+      * camera 
+      * transformationMatrix).data();
+    
+    glUniformMatrix4fv(glGetUniformLocation(programId, "MVP"), 1, false, mvp);
   }
   else
   {
-      const auto mvp = MatrixUtility::convertToColumnMajorArray<float>(
-        Matrices::orthographicProjectionMatrix3D<float>(-50, 50, -50, 50, -100, 100) * camera * transformationMatrix).data();
-      glUniformMatrix4fv(glGetUniformLocation(programId, "MVP"), 1, false, mvp);
+    const float oneHalfViewWidth = 100.0 * 0.5 * aspectRatio;
+    const auto mvp = MatrixUtility::convertToColumnMajorArray<float>(
+      Matrices::orthographicProjectionMatrix3D<float>(-oneHalfViewWidth, oneHalfViewWidth, -50, 50, -100, 100) 
+      * camera 
+      * transformationMatrix).data();
+
+    glUniformMatrix4fv(glGetUniformLocation(programId, "MVP"), 1, false, mvp);
   }
 }
 
