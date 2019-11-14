@@ -31,8 +31,13 @@ namespace MathTypes
 
 template <int lhsRows, int lhsColumns, int rhsRows, int rhsColumns, typename CoordinatePrimitive>
 MathTypes::Matrix<lhsRows, rhsColumns, CoordinatePrimitive> operator*(
-	MathTypes::Matrix<lhsRows, lhsColumns, CoordinatePrimitive> lhs, 
-	MathTypes::Matrix<rhsRows, rhsColumns, CoordinatePrimitive> rhs);
+	const MathTypes::Matrix<lhsRows, lhsColumns, CoordinatePrimitive>& lhs, 
+	const MathTypes::Matrix<rhsRows, rhsColumns, CoordinatePrimitive>& rhs);
+
+template <int rows, int columns, typename CoordinatePrimitive>
+MathTypes::Matrix<rows, columns, CoordinatePrimitive> operator+(
+	const MathTypes::Matrix<rows, columns, CoordinatePrimitive>& lhs, 
+	const MathTypes::Matrix<rows, columns, CoordinatePrimitive>& rhs);
 
 template<int rows, int columns, typename CoordinatePrimitive>
 MathTypes::Matrix<rows, columns, CoordinatePrimitive>::Matrix(
@@ -115,8 +120,8 @@ std::array<CoordinatePrimitive, columns> MathTypes::Matrix<rows, columns, Coordi
 
 template <int lhsRows, int lhsColumns, int rhsRows, int rhsColumns, typename CoordinatePrimitive>
 MathTypes::Matrix<lhsRows, rhsColumns, CoordinatePrimitive> operator*(
-	MathTypes::Matrix<lhsRows, lhsColumns, CoordinatePrimitive> lhs, 
-	MathTypes::Matrix<rhsRows, rhsColumns, CoordinatePrimitive> rhs)
+	const MathTypes::Matrix<lhsRows, lhsColumns, CoordinatePrimitive>& lhs, 
+	const MathTypes::Matrix<rhsRows, rhsColumns, CoordinatePrimitive>& rhs)
 	{
 		assert(lhsColumns == rhsRows);
 
@@ -147,6 +152,22 @@ MathTypes::Matrix<lhsRows, rhsColumns, CoordinatePrimitive> operator*(
 
 		return MathTypes::Matrix<lhsRows, rhsColumns, CoordinatePrimitive>(data);
 	}
+
+template <int rows, int columns, typename CoordinatePrimitive>
+MathTypes::Matrix<rows, columns, CoordinatePrimitive> operator+(
+	const MathTypes::Matrix<rows, columns, CoordinatePrimitive>& lhs, 
+	const MathTypes::Matrix<rows, columns, CoordinatePrimitive>& rhs)
+{
+	CoordinatePrimitive matrixSum[rows][columns];	
+	for(int i = 0; i < rows; i++)
+	{
+		for(int j = 0; j < columns; j++)
+		{
+			matrixSum[i][j] = lhs[i][j] + rhs[i][j];
+		}
+	}
+	return MathTypes::Matrix<rows, columns, CoordinatePrimitive>(matrixSum);
+}
 
 template<int rows, int columns, typename CoordinatePrimitive>
 std::array<CoordinatePrimitive, columns> MathTypes::Matrix<rows, columns, CoordinatePrimitive>::ithRow(int i) const

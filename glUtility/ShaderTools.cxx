@@ -23,6 +23,32 @@ GLuint GLUtility::createProgramFromShaders(const char** vertexShaderCode, const 
   return programId;
 }
 
+GLuint GLUtility::createProgramFromShaders(
+  const char** vertexShaderCode, 
+  const char** geometryShaderCode, 
+  const char** fragmentShaderCode)
+{
+  GLuint vertexShaderId = createShader(vertexShaderCode, GL_VERTEX_SHADER);
+  GLuint geometryShaderId = createShader(geometryShaderCode, GL_GEOMETRY_SHADER);
+  GLuint fragmentShaderId = createShader(fragmentShaderCode, GL_FRAGMENT_SHADER);
+
+  GLuint programId = glCreateProgram();
+  glAttachShader(programId, vertexShaderId);
+  glAttachShader(programId, geometryShaderId);
+  glAttachShader(programId, fragmentShaderId);
+  glLinkProgram(programId);
+  checkProgramLinkStatus(programId);
+
+  glDetachShader(programId, fragmentShaderId);
+  glDetachShader(programId, geometryShaderId);
+  glDetachShader(programId, vertexShaderId);
+  glDeleteShader(fragmentShaderId);
+  glDeleteShader(geometryShaderId);
+  glDeleteShader(vertexShaderId);
+
+  return programId;
+}
+
 GLuint GLUtility::createShader(const char** shaderCode, GLenum shaderType)
 {
   GLuint shaderId = glCreateShader(shaderType);
@@ -31,7 +57,7 @@ GLuint GLUtility::createShader(const char** shaderCode, GLenum shaderType)
 
   if(!checkShaderCompileStatus(shaderId))
   {
-    std::exit(-1);
+    exit(-1);
   }
 
   return shaderId;

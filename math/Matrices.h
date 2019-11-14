@@ -5,9 +5,10 @@
 #include <cmath>
 #include <iterator>
 
-#include "LinearMath.h"
-#include "Matrix.h"
-#include "Trigonometry.h"
+#include "math/LinearMath.h"
+#include "math/Matrix.h"
+#include "math/Trigonometry.h"
+#include "math/Vector.h"
 
 namespace MatrixUtility
 {
@@ -22,18 +23,20 @@ namespace Matrices
 	MathTypes::Matrix<4, 4, CoordinatePrimitive> identityMatrix3D();
 
 	template<typename CoordinatePrimitive>
-	MathTypes::Matrix<4, 4, CoordinatePrimitive> perspectiveProjectionMatrix3D(CoordinatePrimitive left, CoordinatePrimitive
-	right, CoordinatePrimitive bottom, CoordinatePrimitive top, CoordinatePrimitive near, CoordinatePrimitive far);
-
-	template<typename CoordinatePrimitive>
-	MathTypes::Matrix<4, 4, CoordinatePrimitive> projectionMatrix3D(CoordinatePrimitive near, CoordinatePrimitive far);
+	MathTypes::Matrix<4, 4, CoordinatePrimitive> perspectiveProjectionMatrix3D(
+		CoordinatePrimitive left, 
+		CoordinatePrimitive right,
+		CoordinatePrimitive bottom,
+		CoordinatePrimitive top, 
+		CoordinatePrimitive near, 
+		CoordinatePrimitive far);
 
 	template<typename CoordinatePrimitive>
 	MathTypes::Matrix<4, 4, CoordinatePrimitive> orthographicProjectionMatrix3D(
 		CoordinatePrimitive left, 
 		CoordinatePrimitive right,
-		CoordinatePrimitive top,
 		CoordinatePrimitive bottom,
+		CoordinatePrimitive top,
 		CoordinatePrimitive near, 
 		CoordinatePrimitive far);
 
@@ -82,6 +85,10 @@ namespace Matrices
 	MathTypes::Matrix<4, 4, CoordinatePrimitive> rotateAboutZ3D(CoordinatePrimitive angleInDegrees);
 
 	template<typename CoordinatePrimitive>
+	MathTypes::Matrix<4, 4, CoordinatePrimitive> rotateAboutLine(
+		const MathTypes::Vector<3, CoordinatePrimitive>& vectorAlongLine, CoordinatePrimitive angleInDegrees);
+
+	template<typename CoordinatePrimitive>
 	MathTypes::Matrix<4, 4, CoordinatePrimitive> translateDoTransformationAndTranslateBack(
 		const MathTypes::Matrix<4, 4, CoordinatePrimitive>& transformation,
 		const MathTypes::Vector<3, CoordinatePrimitive>& translationVector);
@@ -126,18 +133,6 @@ MathTypes::Matrix<4, 4, CoordinatePrimitive> Matrices::perspectiveProjectionMatr
 		{0,     					  0,     					 -1,      						 0}
 	});
 }
-
-template<typename CoordinatePrimitive>
-MathTypes::Matrix<4, 4, CoordinatePrimitive> Matrices::projectionMatrix3D(CoordinatePrimitive near, CoordinatePrimitive far)
-{
-		return MathTypes::Matrix<4, 4, CoordinatePrimitive>({
-		{near, 0,     	0, 			0},
-		{0,    near, 	0, 			0},
-		{0,    0,     	(near+far), -far*near},
-		{0,    0,     	1,      		0}
-	});
-}
-
 
 template<typename CoordinatePrimitive>
 MathTypes::Matrix<4, 4, CoordinatePrimitive> Matrices::orthographicProjectionMatrix3D(
@@ -312,6 +307,26 @@ MathTypes::Matrix<4, 4, CoordinatePrimitive> Matrices::rotateAboutZ3D(Coordinate
 		{sineOfAngle, 	 cosineOfAngle,  0, 0},
 		{0,             0, 				  1, 0},
 		{0,             0,				  0, 1}
+	});
+}
+
+template<typename CoordinatePrimitive>
+MathTypes::Matrix<4, 4, CoordinatePrimitive> Matrices::rotateAboutLine(
+	const MathTypes::Vector<3, CoordinatePrimitive>& vectorAlongLine, CoordinatePrimitive angleInDegrees)
+{
+	auto normalized = vectorAlongLine.normalized();
+	CoordinatePrimitive x = normalized.xValue();
+	CoordinatePrimitive y = normalized.yValue();
+	CoordinatePrimitive z = normalized.zValue();
+	CoordinatePrimitive angleInRadians = Trigonometry::convertAngleFromDegreesToRadians(angleInDegrees);
+	CoordinatePrimitive cos = static_cast<CoordinatePrimitive>(std::cos(angleInRadians));
+	CoordinatePrimitive sin = static_cast<CoordinatePrimitive>(std::sin(angleInRadians));
+
+	return MathTypes::Matrix<4, 4, CoordinatePrimitive>({
+		{x*x + (1 - x*x)*cos,   x*y*(1 - cos) - z*sin, x*z*(1 - cos) + y*sin, 0},
+		{x*y*(1 - cos) + z*sin, y*y + (1 - y*y)*cos,   y*z*(1 - cos) - x*sin, 0},
+		{x*z*(1 - cos) - y*sin, y*z*(1 - cos) + x*sin, z*z + (1 - z*z)*cos,   0},
+		{0,                     0,                     0, 				          1}
 	});
 }
 

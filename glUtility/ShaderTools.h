@@ -5,6 +5,10 @@
 namespace GLUtility 
 {
 	GLuint createProgramFromShaders(const char** vertexShaderCode, const char** fragmentShaderCode);
+	GLuint createProgramFromShaders(
+  		const char** vertexShaderCode, 
+  		const char** geometryShaderCode, 
+  		const char** fragmentShaderCode);
 	GLuint createShader(const char** shaderCode, GLenum shaderType);
 
 	bool checkShaderCompileStatus(GLuint shaderID);
