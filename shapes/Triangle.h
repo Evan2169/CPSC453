@@ -20,6 +20,7 @@ namespace Shapes
 		~Triangle() = default;
 		
 		std::vector<MathTypes::Vector<dimensions, CoordinatePrimitive>> vertices() const;
+		std::vector<Shapes::Triangle<dimensions, CoordinatePrimitive>> underlyingTriangles() const;
 		void transform(const MathTypes::Matrix<dimensions+1, dimensions+1, CoordinatePrimitive>& transformationMatrix);
 
 		std::string toString() const;
@@ -54,8 +55,15 @@ std::vector<MathTypes::Vector<dimensions, CoordinatePrimitive>>
 Shapes::Triangle<dimensions, CoordinatePrimitive>::vertices() const
 {
 	std::vector<MathTypes::Vector<dimensions, CoordinatePrimitive>> vertices = {pointOne_, pointTwo_, pointThree_};
-
+	
 	return vertices;
+}
+
+template<int dimensions, typename CoordinatePrimitive>
+std::vector<Shapes::Triangle<dimensions, CoordinatePrimitive>>
+Shapes::Triangle<dimensions, CoordinatePrimitive>::underlyingTriangles() const
+{
+	return std::vector({*this});
 }
 
 template<int dimensions, typename CoordinatePrimitive>

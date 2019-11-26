@@ -26,6 +26,7 @@ namespace Shapes
 		Quadrilateral<3, CoordinatePrimitive> left() const;
 
 		std::vector<MathTypes::Vector<3, CoordinatePrimitive>> vertices() const;
+		std::vector<Shapes::Triangle<3, CoordinatePrimitive>> underlyingTriangles() const;
 		void transform(const MathTypes::Matrix<4, 4, CoordinatePrimitive>& transformationMatrix);
 
 		std::string toString() const;
@@ -117,6 +118,20 @@ std::vector<MathTypes::Vector<3, CoordinatePrimitive>> Shapes::Cube<CoordinatePr
 		}
 	}
 	return vertices;
+}
+
+template<typename CoordinatePrimitive>
+std::vector<Shapes::Triangle<3, CoordinatePrimitive>> Shapes::Cube<CoordinatePrimitive>::underlyingTriangles() const
+{
+	std::vector<Shapes::Triangle<3, CoordinatePrimitive>> triangles;
+	for(const auto& side : allSides())
+	{
+		for(const auto& triangle : side.underlyingTriangles())
+		{
+			triangles.push_back(triangle);
+		}
+	}
+	return triangles;
 }
 
 template<typename CoordinatePrimitive>

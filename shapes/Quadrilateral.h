@@ -19,6 +19,7 @@ namespace Shapes
 		~Quadrilateral() = default;
 		
 		std::vector<MathTypes::Vector<dimensions, CoordinatePrimitive>> vertices() const;
+		std::vector<Shapes::Triangle<dimensions, CoordinatePrimitive>> underlyingTriangles() const;
 		void transform(const MathTypes::Matrix<dimensions+1, dimensions+1, CoordinatePrimitive>& transformationMatrix);
 
 		std::string toString() const;
@@ -52,6 +53,14 @@ Shapes::Quadrilateral<dimensions, CoordinatePrimitive>::vertices() const
 
 	return vertices;
 }
+
+template<int dimensions, typename CoordinatePrimitive>
+std::vector<Shapes::Triangle<dimensions, CoordinatePrimitive>>
+Shapes::Quadrilateral<dimensions, CoordinatePrimitive>::underlyingTriangles() const
+{
+	return std::vector({topLeftTopRightBottomRight_, topLeftBottomRightBottomLeft_});
+}
+
 
 template<int dimensions, typename CoordinatePrimitive>
 void Shapes::Quadrilateral<dimensions, CoordinatePrimitive>::transform(
