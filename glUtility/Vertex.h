@@ -48,3 +48,14 @@ namespace GLUtility
 		Colour<ColourPrimitive> colour;
 	};
 }
+
+template<typename ColourPrimitive>
+GLUtility::Colour<ColourPrimitive> operator*(
+	const GLUtility::Colour<ColourPrimitive>& lhs,
+	const GLUtility::Colour<ColourPrimitive>& rhs)
+{
+	return GLUtility::Colour<ColourPrimitive>(
+		lhs.red * rhs.red,
+		lhs.green * rhs.green,
+		lhs.blue * rhs.blue);
+}
