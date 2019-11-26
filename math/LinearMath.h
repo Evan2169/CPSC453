@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Vector.h"
+#include "math/Matrix.h"
+#include "math/Vector.h"
 
 namespace LinearMath
 {
@@ -12,6 +13,9 @@ namespace LinearMath
 	MathTypes::Vector<3, CoordinatePrimitive> crossProduct(
 		const MathTypes::Vector<3, CoordinatePrimitive>& lhs, 
 		const MathTypes::Vector<3, CoordinatePrimitive>& rhs);
+
+	template<int dimensions, typename CoordinatePrimitive>
+	CoordinatePrimitive determinant(const MathTypes::Matrix<dimensions, dimensions, CoordinatePrimitive>& matrix);
 
 	template<int dimensions, typename CoordinatePrimitive>
 	MathTypes::Vector<dimensions, CoordinatePrimitive> linearInterpolation(
@@ -59,6 +63,24 @@ MathTypes::Vector<3, CoordinatePrimitive> LinearMath::crossProduct(
 	const CoordinatePrimitive kScalar = (lhs.xValue() * rhs.yValue()) - (lhs.yValue() * rhs.xValue());
 
 	return MathTypes::Vector<3, CoordinatePrimitive>(iScalar, -1*jScalar, kScalar);
+}
+
+template<typename CoordinatePrimitive>
+CoordinatePrimitive LinearMath::determinant(const MathTypes::Matrix<2, 2, CoordinatePrimitive>& matrix)
+{
+	auto& m = matrix;
+
+	return m[0][0]*m[1][1] - m[0][1]*m[1][0];
+}
+
+template<typename CoordinatePrimitive>
+CoordinatePrimitive LinearMath::determinant(const MathTypes::Matrix<3, 3, CoordinatePrimitive>& matrix)
+{
+	auto& m = matrix;
+
+	return m[0][0]*(m[1][1]*m[2][2] - m[1][2]*m[2][1])
+		  - m[0][1]*(m[1][0]*m[2][2] - m[1][2]*m[2][0])
+		  + m[0][2]*(m[1][0]*m[2][1] - m[1][1]*m[2][0]);
 }
 
 template<int dimensions, typename CoordinatePrimitive>
