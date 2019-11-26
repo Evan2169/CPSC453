@@ -5,7 +5,7 @@
 #include <string>
 #include <typeinfo>
 
-#include "Matrix.h"
+#include "math/Matrix.h"
 
 namespace MathTypes
 {
@@ -13,10 +13,9 @@ namespace MathTypes
 	class Vector
 	{
 	public:
-		virtual ~Vector() = default;
+		~Vector() = default;
 	};
 	
-	//2D Template Specialization of Vector Class
 	template<typename CoordinatePrimitive>
 	class Vector<2, CoordinatePrimitive>
 	{
@@ -40,7 +39,6 @@ namespace MathTypes
 		CoordinatePrimitive y_;
 	};
 	
-	//3D Template Specialization of Vector Class
 	template<typename CoordinatePrimitive>
 	class Vector<3, CoordinatePrimitive>
 	{
@@ -52,7 +50,6 @@ namespace MathTypes
 		CoordinatePrimitive yValue() const;
 		CoordinatePrimitive zValue() const;
 
-		// CoordinatePrimitive magnitude() const;
 		CoordinatePrimitive magnitude() const;
 		CoordinatePrimitive magnitudeSquared() const;
 		Vector<3, CoordinatePrimitive> normalized() const;
@@ -67,7 +64,6 @@ namespace MathTypes
 		CoordinatePrimitive z_;
 	};
 
-	//4D Template Specialization of Vector Class
 	template<typename CoordinatePrimitive>
 	class Vector<4, CoordinatePrimitive>
 	{
@@ -210,7 +206,7 @@ bool operator==(const MathTypes::Vector<2, CoordinatePrimitive>& lhs, const Math
 template<typename CoordinatePrimitive>
 MathTypes::Vector<2, CoordinatePrimitive>::operator Matrix<2, 1, CoordinatePrimitive>() const
 {
-	auto columnVector = {
+	CoordinatePrimitive columnVector[2][1] = {
 		{x_}, 
 		{y_}
 	};
@@ -339,7 +335,7 @@ bool operator==(const MathTypes::Vector<3, CoordinatePrimitive> lhs,
 template<typename CoordinatePrimitive>
 MathTypes::Vector<3, CoordinatePrimitive>::operator Matrix<3, 1, CoordinatePrimitive>() const
 {
-	auto columnVector = {
+	CoordinatePrimitive columnVector[3][1] = {
 		{x_}, 
 		{y_},
 		{z_}
