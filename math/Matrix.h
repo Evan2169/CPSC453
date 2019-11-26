@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cstdio>
@@ -14,13 +15,19 @@ namespace MathTypes
 	{
 		public:
 			explicit Matrix(std::initializer_list<std::initializer_list<CoordinatePrimitive>> data);
+			explicit Matrix(std::array<std::array<CoordinatePrimitive, columns>, rows> data);
 			explicit Matrix(CoordinatePrimitive data[rows][columns]);
 			~Matrix() = default;
 
-			Matrix<columns, rows, CoordinatePrimitive> transpose() const;
 			std::array<CoordinatePrimitive, columns> operator[](int row) const;
 			std::array<CoordinatePrimitive, columns> ithRow(int i) const;
 			std::array<CoordinatePrimitive, rows> jthColumn(int j) const;
+
+			Matrix<columns, rows, CoordinatePrimitive> transpose() const;
+			Matrix<columns, rows, CoordinatePrimitive> withRowReplaced(
+				int rowToReplace, std::array<CoordinatePrimitive, rows> newRow) const;
+			Matrix<columns, rows, CoordinatePrimitive> withColumnReplaced(
+				int columnToReplace, std::array<CoordinatePrimitive, rows> newColumn) const;
 
 			std::string toString() const;
 
@@ -61,6 +68,13 @@ MathTypes::Matrix<rows, columns, CoordinatePrimitive>::Matrix(
 }
 
 template<int rows, int columns, typename CoordinatePrimitive>
+MathTypes::Matrix<rows, columns, CoordinatePrimitive>::Matrix(
+	std::array<std::array<CoordinatePrimitive, columns>, rows> data) 
+	: data_(data)
+{
+}
+
+template<int rows, int columns, typename CoordinatePrimitive>
 MathTypes::Matrix<rows, columns, CoordinatePrimitive>::Matrix(CoordinatePrimitive data[rows][columns])
 {
 	for(int i = 0; i < rows; i++)
@@ -93,22 +107,6 @@ std::string MathTypes::Matrix<rows, columns, CoordinatePrimitive>::toString() co
 
 	return matrixDescription;
 }
-
-template <int rows, int columns, typename CoordinatePrimitive>
-MathTypes::Matrix<columns, rows, CoordinatePrimitive> MathTypes::Matrix<rows, columns, CoordinatePrimitive>::transpose() const
-{
-	CoordinatePrimitive transposedRaw[columns][rows];
-	for(int i = 0; i < rows; i++)
-	{
-		for(int j = 0; j < columns; j++)
-		{
-			transposedRaw[j][i] = data_[i][j];
-		}
-	}
-
-	return Matrix<columns, rows, CoordinatePrimitive>(transposedRaw);
-}
-
 
 template <int rows, int columns, typename CoordinatePrimitive>
 std::array<CoordinatePrimitive, columns> MathTypes::Matrix<rows, columns, CoordinatePrimitive>::operator[](int row) const
@@ -186,4 +184,40 @@ std::array<CoordinatePrimitive, rows> MathTypes::Matrix<rows, columns, Coordinat
 	}
 
 	return buffer;
+}
+
+template <int rows, int columns, typename CoordinatePrimitive>
+MathTypes::Matrix<columns, rows, CoordinatePrimitive> 
+MathTypes::Matrix<rows, columns, CoordinatePrimitive>::transpose() const
+{
+	CoordinatePrimitive transposedRaw[columns][rows];
+	for(int i = 0; i < rows; i++)
+	{
+		for(int j = 0; j < columns; j++)
+		{
+			transposedRaw[j][i] = data_[i][j];
+		}
+	}
+
+	return Matrix<columns, rows, CoordinatePrimitive>(transposedRaw);
+}
+
+template <int rows, int columns, typename CoordinatePrimitive>
+MathTypes::Matrix<columns, rows, CoordinatePrimitive> 
+MathTypes::Matrix<rows, columns, CoordinatePrimitive>::withRowReplaced(
+	int rowToReplace,
+	std::array<CoordinatePrimitive, rows> newRow) const
+{
+	auto copyOfData = data_;
+	std::swap(copyOfData[rowToReplace], newRow);
+	return Matrix<rows, columns, CoordinatePrimitive>(copyOfData);
+}
+
+template <int rows, int columns, typename CoordinatePrimitive>
+MathTypes::Matrix<columns, rows, CoordinatePrimitive> 
+MathTypes::Matrix<rows, columns, CoordinatePrimitive>::withColumnReplaced(
+	int columnToReplace,
+	std::array<CoordinatePrimitive, rows> newColumn) const
+{
+	return this->transpose().withRowReplaced(columnToReplace, newColumn).transpose(); 
 }
