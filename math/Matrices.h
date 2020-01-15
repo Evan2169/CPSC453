@@ -23,6 +23,9 @@ namespace Matrices
 	MathTypes::Matrix<4, 4, CoordinatePrimitive> identityMatrix3D();
 
 	template<typename CoordinatePrimitive>
+	MathTypes::Matrix<4, 4, CoordinatePrimitive> viewportMatrix3D(int xPixels, int yPixels);
+
+	template<typename CoordinatePrimitive>
 	MathTypes::Matrix<4, 4, CoordinatePrimitive> perspectiveProjectionMatrix3D(
 		CoordinatePrimitive left, 
 		CoordinatePrimitive right,
@@ -119,6 +122,20 @@ MathTypes::Matrix<4, 4, CoordinatePrimitive> Matrices::identityMatrix3D()
 		{0, 1, 0, 0},
 		{0, 0, 1, 0},
 		{0, 0, 0, 1}
+	});
+}
+
+template<typename CoordinatePrimitive>
+MathTypes::Matrix<4, 4, CoordinatePrimitive> Matrices::viewportMatrix3D(int xPixels, int yPixels)
+{
+	auto x = static_cast<CoordinatePrimitive>(xPixels);
+	auto y = static_cast<CoordinatePrimitive>(yPixels);
+
+	return MathTypes::Matrix<4, 4, CoordinatePrimitive>({
+		{x/2, 0,   0, (x-1)/2},
+		{0,   y/2, 0, (y-1)/2},
+		{0,   0,   1, 0},
+		{0,   0,   0, 1}
 	});
 }
 
