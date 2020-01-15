@@ -42,6 +42,16 @@ MathTypes::Matrix<lhsRows, rhsColumns, CoordinatePrimitive> operator*(
 	const MathTypes::Matrix<rhsRows, rhsColumns, CoordinatePrimitive>& rhs);
 
 template <int rows, int columns, typename CoordinatePrimitive>
+MathTypes::Matrix<rows, columns, CoordinatePrimitive> operator*(
+	CoordinatePrimitive lhs, 
+	const MathTypes::Matrix<rows, columns, CoordinatePrimitive>& rhs);
+
+template <int rows, int columns, typename CoordinatePrimitive>
+MathTypes::Matrix<rows, columns, CoordinatePrimitive> operator*(
+	const MathTypes::Matrix<rows, columns, CoordinatePrimitive>& lhs,
+	CoordinatePrimitive rhs);
+
+template <int rows, int columns, typename CoordinatePrimitive>
 MathTypes::Matrix<rows, columns, CoordinatePrimitive> operator+(
 	const MathTypes::Matrix<rows, columns, CoordinatePrimitive>& lhs, 
 	const MathTypes::Matrix<rows, columns, CoordinatePrimitive>& rhs);
@@ -150,6 +160,30 @@ MathTypes::Matrix<lhsRows, rhsColumns, CoordinatePrimitive> operator*(
 
 		return MathTypes::Matrix<lhsRows, rhsColumns, CoordinatePrimitive>(data);
 	}
+
+template <int rows, int columns, typename CoordinatePrimitive>
+MathTypes::Matrix<rows, columns, CoordinatePrimitive> operator*(
+	CoordinatePrimitive lhs, 
+	const MathTypes::Matrix<rows, columns, CoordinatePrimitive>& rhs)
+{
+	CoordinatePrimitive data[rows][columns];
+	for(int i = 0; i < rows; i++)
+	{
+		for(int j = 0; j < columns; j++)
+		{
+			data[i][j] = rhs[i][j] * lhs;
+		}
+	}
+	return MathTypes::Matrix<rows, columns, CoordinatePrimitive>(data);
+}
+
+template <int rows, int columns, typename CoordinatePrimitive>
+MathTypes::Matrix<rows, columns, CoordinatePrimitive> operator*(
+	const MathTypes::Matrix<rows, columns, CoordinatePrimitive>& lhs,
+	CoordinatePrimitive rhs)
+{
+	return rhs * lhs;
+}
 
 template <int rows, int columns, typename CoordinatePrimitive>
 MathTypes::Matrix<rows, columns, CoordinatePrimitive> operator+(
