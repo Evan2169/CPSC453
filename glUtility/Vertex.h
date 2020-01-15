@@ -36,6 +36,22 @@ namespace GLUtility
 		CoordinatePrimitive z;
 	};
 
+	template<typename CoordinatePrimitive>
+	struct Normal
+	{
+		Normal() = default;
+		Normal(MathTypes::Vector<2, CoordinatePrimitive> vec) : x(vec.xValue()), y(vec.yValue())
+		{
+		};
+		Normal(MathTypes::Vector<3, CoordinatePrimitive> vec) : x(vec.xValue()), y(vec.yValue()), z(vec.zValue())
+		{
+		};
+
+		CoordinatePrimitive x;
+		CoordinatePrimitive y;
+		CoordinatePrimitive z;
+	};
+
 	template<typename CoordinatePrimitive, typename ColourPrimitive>
 	struct Vertex
 	{
@@ -43,9 +59,14 @@ namespace GLUtility
 		: position(position), colour(colour)
 		{
 		};
+		Vertex(Position<CoordinatePrimitive> position, Colour<ColourPrimitive> colour, Normal<CoordinatePrimitive> normal) 
+		: position(position), colour(colour), normal(normal)
+		{
+		};
 
 		Position<CoordinatePrimitive> position;
 		Colour<ColourPrimitive> colour;
+		Normal<CoordinatePrimitive> normal;
 	};
 }
 
