@@ -4,8 +4,8 @@ class GLFWwindow;
 
 namespace WindowDimensions
 {
-	static const int INITIAL_WINDOW_WIDTH = 800;
-	static const int INITIAL_WINDOW_HEIGHT = 800;
+	static const int INITIAL_WINDOW_WIDTH = 1000;
+	static const int INITIAL_WINDOW_HEIGHT = 1000;
 }
 
 namespace GLFWBoilerplate
